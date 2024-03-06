@@ -1,0 +1,108 @@
+# A wrapper script for identifying mutated positions in the analyzed reads and their sequencing quality
+
+params_1="$PWD/config_files/params_1.sh"
+params_2="$PWD/config_files/samples_table.sh"
+
+run_on_slurm=1
+
+#######################################
+# Gather pipeline parameter data; check that read mapping step was performed
+function assert_ { rc=$?; if [[ $rc != 0 ]]; then echo 'exit !!!!'; exit $rc; fi }
+
+. $params_1
+assert_
+. $params_2
+assert_
+
+if [ ! -d "$params_dir_out_1/mapping" ]; then
+    exit "error: not all parameters/files exit"
+fi
+
+# Create output folders
+outdir="$params_dir_out_1/mutations"
+if [ ! -d "$outdir" ]; then mkdir "$outdir"; assert_; fi
+
+runtime=$(date +"%y-%m-%dT%H%M")
+logdir="$outdir/logs_$runtime"
+if [ ! -d "$logdir" ]; then mkdir "$logdir"; assert_; fi
+
+# Create log file capturing run information
+run_log="$params_dir_out_1/Sam2mut_list_bash_log.txt"
+if [ -f "$run_log" ]; then rm $run_log; fi
+
+#######################################
+# Iterate over analyzed sample treatment (Cont/Exp)
+for i in ${!title[@]}; do
+
+    # Collect input data parameters 
+    title1="${title[i]}"_"idx$i"
+    refs1=$(echo "${sort_ref[i]}"";""${sort_refs[i]}" | tr ";" "\n")
+    limit_start="${limit_starts[$i]}"
+    limit_end="${limit_ends[$i]}"
+    
+    echo -e "******\n" >> $run_log
+    echo "limits = $limit_start - $limit_end" >> $run_log
+    
+    # Iterate over individual sorted read files to perform mutation identification jobs
+    k=0
+    for r1 in $refs1; do
+        echo "r1 = $r1" >> $run_log
+        let k=$k+1
+        echo "k = "$k >> $run_log
+        
+        r2="$r1"
+        if [ $k -eq 1 ]; then r2="$r2.others"; fi # First item in loop refers to "others" (ambigous origin reads)
+        
+        bam="$params_dir_out_1/mapping/$title1.$r2.bwa.sorted.bam"
+        ref1="$params_dir_reference"/"$r1".fa
+        
+        echo "bam = $bam" >> $run_log
+        echo "ref1 = $ref1" >> $run_log
+        
+        # Test that all parameters are defined and that input files exist before executing the jobs
+        if [ -f "$bam" ] && [ -f $ref1 ]; then
+            echo 'Alignment and reference sequence files are found' >> $run_log 
+            
+            if [ ! -z "$limit_start" ] && [ ! -z "$limit_end" ] && [ ! -z "$title1" ] && [ ! -z "$bam" ] && [ ! -z "$ref1" ]; then
+                echo -e "Analysis parameters are found\n" >> $run_log
+                
+                #for sam_BX_tag in '' 'BC3_missing'; do # Uncomment this line to include only specific sam BX tags
+                sam_BX_tag=''; 
+               
+                echo "sam_BX_tag = \"$sam_BX_tag\"" >> $run_log
+                echo "title = $title1" >> $run_log
+                echo -e "log name = ""$logdir"/"$title1.$r2.bwa.sorted.bam.$sam_BX_tag.out""\n" >> $run_log             
+                
+                 # Run the jobs, if '1' is specified; otherwise run the wrapper w/o job execution, to test that input parameters are correct
+                if [ $1 -eq 1 ]; then
+                    echo 'OK' >> $run_log
+                        
+                       sbatch --mem=20000  -N 1 -n 1 --ntasks-per-node=1 \
+                                -p hive1d,hive7d,hiveunlim,queen \
+                                -o "$logdir"/"$title1.$r2.$sam_BX_tag.out" -e "$logdir"/"$title1.$r2.$sam_BX_tag.err" \
+                               --wrap "python sam_to_mutation-list-3.py \\
+                                             --sam_files_path=\"$bam\" \\
+                                             --out_dir=\"$outdir\" \\
+                                             --ref_fasta=\"$ref1\" \\
+                                             --limit_start=\"$limit_start\" \\
+                                             --limit_end=\"$limit_end\" \\
+                                             --queryAlnMustStartAt0=1 \\
+                                             --include_BX_tag=\"$sam_BX_tag\" \\
+                                      "
+                       assert_
+                fi
+                #done # Uncomment this line to include only specific sam BX tags
+                
+                echo -e "----------" >> $run_log
+            else
+                echo 'Error: not all parameters OK'
+                exit
+            fi
+        else
+            echo 'Error: not all input files exist'
+        fi
+    done
+    echo '---------'
+done
+
+

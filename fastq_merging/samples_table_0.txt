@@ -1,0 +1,12 @@
+pair	sample	file
+
+1	exp2155	/data/home/run15_1/HBS15_2155/Raw_Data/1_S1_L001_R1_001.fastq.gz
+1	exp2155	/data/home/run15_1/HBS15_2155/Raw_Data/1_S1_L001_R2_001.fastq.gz
+2	exp2155	/data/home/run15_2/HBS15_2155_run2/Raw_Data/1_S1_L001_R1_001.fastq.gz
+2	exp2155	/data/home/run15_2/HBS15_2155_run2/Raw_Data/1_S1_L001_R2_001.fastq.gz
+
+1	cont2155	/data/home/run15_1/HBS15_2155/Raw_Data/2_S2_L001_R1_001.fastq.gz
+1	cont2155	/data/home/run15_1/HBS15_2155/Raw_Data/2_S2_L001_R2_001.fastq.gz
+2	cont2155	/data/home/run15_2/HBS15_2155_run2/Raw_Data/2_S2_L001_R1_001.fastq.gz
+2	cont2155	/data/home/run15_2/HBS15_2155_run2/Raw_Data/2_S2_L001_R2_001.fastq.gz
+

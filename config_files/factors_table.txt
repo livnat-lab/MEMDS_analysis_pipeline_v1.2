@@ -1,0 +1,3 @@
+sample	reference_size	size_f	size_r	limit_starts	limit_ends	seq_pos	seq_mut	seq_action	read_seq	read_pos	read_action	sort_pos	sort_nucl	sort_refs	sort_ref	sort_match
+Apl8_exp	118	18	9	17,37	17,88	17	-T	exclude	GGTACT,ATCT	15,-6	include,include	37,38,39,40,41	A,T,T,C,G	APL1	APL1	0.6
+Apl8_cont	118	18	9	17,37	17,88	17	-T	exclude	TGATCT,ATGA	15,-6	include,include	37,38,39,40,41	A,T,T,C,G	APL1	APL1	0.6

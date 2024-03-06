@@ -1,0 +1,7 @@
+pair	sample	file
+
+1	Apl8_exp	/data/home/livnat/dmelamed/daniel/APOL1/Apl1_try/raw_concatenated/Apl8_exp_f.fastq.gz
+1	Apl8_exp	/data/home/livnat/dmelamed/daniel/APOL1/Apl1_try/raw_concatenated/Apl8_exp_r.fastq.gz
+
+2	Apl8_cont	/data/home/livnat/dmelamed/daniel/APOL1/Apl1_try/raw_concatenated/Apl8_cont_f.fastq.gz
+2	Apl8_cont	/data/home/livnat/dmelamed/daniel/APOL1/Apl1_try/raw_concatenated/Apl8_cont_r.fastq.gz
