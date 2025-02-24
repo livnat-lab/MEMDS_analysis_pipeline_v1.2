@@ -109,18 +109,12 @@ b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
 c) **Check** the resulting output mutation tables (**\*.mutations.txt**) and log files (**\*.log.txt**) in the **"mutations"** directory. The log files list number of reads analyzed in each sorted fastq file for mutation presence.\
    **Note**: The log files produced in this step should be identical to the log files produced in Step 8, since both scripts use same filters when analyzing reads.
 
-### 10) Creating data for identification of chimeric read families:
-a) **Run:** *bash intersection.sh 1*\
-b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
-c) **Check** the resulting summary tables in the **"tables_consensus.BC3cutoff1.intersection"** directory. These tables provide information on read families that belong to different analyzed genes and share same primary barcode, suggesting that one of the families might represent a chimeric artifact.
-
-### 11a) Collating mutation data per primary-barcode family:
+### 10a) Collating mutation data per primary-barcode family:
 a) **Run:** *bash consensus_15.1.sh 1*\
-   **Note**: If Step 10 was run, a helper subroutine would be activated to remove chimeric families from the final output of this Step.\
 b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
 c) **Check** the resulting summary tables in the **"tables_consensus.BC3cutoff1"** directory. In these tables all mutation information per primary-barcode family presented in a single row, as a semi-colon separated lists.  
 
-### 11b) Generating consensus mutation tables:
+### 10b) Generating consensus mutation tables:
 a) **Run:** *bash consensus_15.1.sh 2*\
 b) **Check** that the jobs are completed on the grid using **"sacct"** command.\
 c) **Check** the resulting consensus tables in the **"tables_consensus.BC3cutoff1"** directory. Consensus tables list mutation profiles of each primary-bracode read family, after filtering them through a defined set of cutoff criteria.\
