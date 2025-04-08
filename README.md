@@ -1,15 +1,17 @@
 
 # MEMDS output analysis, SLURM version
 
-The pipeline is designed to run on distributed computing systems (clusters) managed by SLURM
+The MEMDS analysis pipeline is designed to run on distributed computing systems (clusters) managed by SLURM.
 (https://slurm.schedmd.com/overview.html)
+
+The pipeline steps need to be run in sequential order, unless marked otherwise.
 
 ## Prerequisite programs
 <details>
-<summary> A run down of external programs utilized by the pipeline </summary>
+<summary> A rundown of external programs utilized by the pipeline </summary>
 <p></p>
 
-The pipeline makes use of several external programs. The easiest way to make sure that all dependencies are installed is to use Conda package manager. Alternatively, one can install manually the programs listed below, however in this case program locations need to be added to the $PATH prior to running the pipeline.
+The easiest way to organize and install all pipeline dependencies is through the Conda package manager.
 
 #### Install miniconda: https://docs.conda.io/en/latest/miniconda.html
 #### Install bioconda: https://bioconda.github.io
@@ -29,15 +31,17 @@ python      2.7.15\
 samtools    1.6\
 seqtk       1.3\
 trimmomatic 0.39
+
+If the user does not wish to use a package manager, all the programs listed above can be manually downloaded and installed from their respective websites. However, in this case, program locations must be added to the $PATH environment variable to ensure that the pipeline scripts can detect them.
 </details>
 
-## Pipeline usage
+## Beginning the run
 <details>
-<summary> A brief start section </summary>
+<summary> Quick start section </summary>
 <p></p>
 
 #### a) Prepare the parameter files needed to run the pipeline, as outlined in the **"Parameter_file_preparation"** guide.
-#### b) Use the "MEMDS_pipeline_wrapper" bash script supplied with the scripts to run desired pipeline steps.
+#### b) Use the "MEMDS_pipeline_wrapper" script to run desired pipeline steps.
 #### c) Alternatively, navigate to the pipeline scripts folder and run them directly. Note that the scripts might produce an error if activated from outside their folder.
 </details>
 
